@@ -2,6 +2,7 @@ package com.ayaan.attorneyi.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ayaan.attorneyi.AppLogger
 import com.ayaan.attorneyi.data.repository.NewsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,6 +38,8 @@ class NewsViewModel(
                             isLoading = false,
                             error = exception.message ?: "Unknown error occurred"
                         )
+                        AppLogger.d("NewsViewModel", "Error loading news: ${exception.message}")
+                        exception.printStackTrace()
                     }
                 )
             }

@@ -15,6 +15,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.ayaan.attorneyi.AppLogger
 import com.ayaan.attorneyi.data.model.Article
 import com.ayaan.attorneyi.presentation.NewsUiState
 import com.ayaan.attorneyi.presentation.NewsViewModel
@@ -29,7 +30,7 @@ fun NewsScreen(
     viewModel: NewsViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-
+    AppLogger.d("NewsScreen", "Current UI State: $uiState")
     BoxWithConstraints(modifier = modifier.fillMaxSize()) {
         val isLandscape = maxWidth > maxHeight
         val contentPadding = if (isLandscape) 24.dp else 16.dp
@@ -75,6 +76,7 @@ private fun NewsContent(
                     error = uiState.error,
                     onRetry = onRetry
                 )
+                AppLogger.d("NewsScreen", "Error state with message: ${uiState.error}")
             }
 
             else -> {

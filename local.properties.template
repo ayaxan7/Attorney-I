@@ -1,0 +1,15 @@
+## This file must *NOT* be checked into Version Control Systems,
+# as it contains information specific to your local configuration.
+#
+# Location of the SDK. This is only used by Gradle.
+# For customization when using a Version Control System, please read the
+# header note.
+
+# Android SDK location
+sdk.dir=/path/to/your/android/sdk
+
+# GNews API Configuration
+# TODO: Add your GNews API key here
+# Get your free API key from: https://gnews.io/
+# Sign up and replace 'your_api_key_here' with your actual API key
+GNEWS_API_KEY=your_api_key_here

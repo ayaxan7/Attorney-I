@@ -19,3 +19,6 @@ captures
 
 # iOS Configuration files with API keys
 iosApp/Configuration/Config.xcconfig
+
+# Ignore Info.plist containing secrets
+iosApp/iosApp/Info.plist

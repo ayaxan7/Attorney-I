@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.dp
 import com.ayaan.attorneyi.presentation.ui.CardBackground
 import com.ayaan.attorneyi.presentation.ui.DarkBackground
 import com.ayaan.attorneyi.presentation.ui.GoldAccent
+import com.ayaan.attorneyi.presentation.ui.TextPrimary
 import com.ayaan.attorneyi.presentation.ui.TextSecondary
 
 @Composable
@@ -27,7 +28,7 @@ fun CategoryFilters() {
                 label = {
                     Text(
                         text = category,
-                        color = if (selectedCategory == category) DarkBackground else TextSecondary
+                        color = if (selectedCategory == category) TextPrimary else TextSecondary
                     )
                 },
                 selected = selectedCategory == category,

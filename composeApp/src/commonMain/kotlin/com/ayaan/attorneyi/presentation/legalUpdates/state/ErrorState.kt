@@ -46,11 +46,11 @@ fun ErrorState(
                 color = TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = error,
-                style = MaterialTheme.typography.bodyMedium,
-                color = TextSecondary
-            )
+//            Text(
+//                text = error,
+//                style = MaterialTheme.typography.bodyMedium,
+//                color = TextSecondary
+//            )
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = onRetry,

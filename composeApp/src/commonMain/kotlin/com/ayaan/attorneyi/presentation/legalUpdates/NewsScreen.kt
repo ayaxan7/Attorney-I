@@ -28,6 +28,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import com.ayaan.attorneyi.presentation.ui.DarkBackground
 import com.ayaan.attorneyi.presentation.legalUpdates.components.NewsList
 import com.ayaan.attorneyi.presentation.legalUpdates.state.ErrorState
+import com.ayaan.attorneyi.presentation.legalUpdates.state.LoadingState
 
 @Composable
 fun NewsScreen(
@@ -104,62 +105,6 @@ private fun NewsContent(
         }
     }
 }
-@Composable
-private fun LoadingState() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            CircularProgressIndicator()
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = "Loading latest legal news...",
-                style = MaterialTheme.typography.bodyMedium
-            )
-        }
-    }
-}
-
-//@Composable
-//private fun NewsList(
-//    articles: List<Article>,
-//    onRefresh: () -> Unit,
-//    isRefreshing: Boolean,
-//    isLandscape: Boolean
-//) {
-//    LazyColumn(
-//        verticalArrangement = Arrangement.spacedBy(16.dp),
-//        contentPadding = PaddingValues(vertical = 8.dp)
-//    ) {
-//        items(articles) { article ->
-//            NewsItem(
-//                article = article,
-//                isLandscape = isLandscape
-//            )
-//        }
-//    }
-//}
-//
-//@Composable
-//private fun NewsItem(
-//    article: Article,
-//    isLandscape: Boolean
-//) {
-//    Card(
-//        modifier = Modifier.fillMaxWidth(),
-//        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-//    ) {
-//        if (isLandscape) {
-//            LandscapeNewsItem(article)
-//        } else {
-//            PortraitNewsItem(article)
-//        }
-//    }
-//}
 
 @Composable
 private fun PortraitNewsItem(article: Article) {

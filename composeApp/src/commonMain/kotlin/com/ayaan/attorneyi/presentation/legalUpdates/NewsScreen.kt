@@ -62,42 +62,44 @@ private fun NewsContent(
     contentPadding: Dp,
     isLandscape: Boolean
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = contentPadding)
-    ) {
-        // Header with notification and filter icons
+    Column() {
         HeaderSection()
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = contentPadding)
+        ) {
 
-        // Category filters
-        CategoryFilters()
 
-        // Breaking news toggle
-        BreakingNewsToggle()
+            // Category filters
+            CategoryFilters()
 
-        Spacer(modifier = Modifier.height(16.dp))
+            // Breaking news toggle
+            BreakingNewsToggle()
 
-        when {
-            uiState.isLoading -> {
-                LoadingState()
-            }
+            Spacer(modifier = Modifier.height(16.dp))
 
-            uiState.error != null && uiState.articles.isEmpty() -> {
-                ErrorState(
-                    error = uiState.error,
-                    onRetry = onRetry
-                )
-                AppLogger.d("NewsScreen", "Error state with message: ${uiState.error}")
-            }
+            when {
+                uiState.isLoading -> {
+                    LoadingState()
+                }
 
-            else -> {
-                NewsList(
-                    articles = uiState.articles,
-                    onRefresh = onRefresh,
-                    isRefreshing = uiState.isRefreshing,
-                    isLandscape = isLandscape
-                )
+                uiState.error != null && uiState.articles.isEmpty() -> {
+                    ErrorState(
+                        error = uiState.error,
+                        onRetry = onRetry
+                    )
+                    AppLogger.d("NewsScreen", "Error state with message: ${uiState.error}")
+                }
+
+                else -> {
+                    NewsList(
+                        articles = uiState.articles,
+                        onRefresh = onRefresh,
+                        isRefreshing = uiState.isRefreshing,
+                        isLandscape = isLandscape
+                    )
+                }
             }
         }
     }

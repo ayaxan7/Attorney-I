@@ -1,4 +1,4 @@
-package com.ayaan.attorneyi.presentation
+package com.ayaan.attorneyi.presentation.legalUpdates
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

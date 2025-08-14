@@ -5,7 +5,7 @@ import androidx.compose.runtime.*
 import com.ayaan.attorneyi.di.dataModule
 import com.ayaan.attorneyi.di.networkModule
 import com.ayaan.attorneyi.di.viewModelModule
-import com.ayaan.attorneyi.presentation.ui.NewsScreen
+import com.ayaan.attorneyi.presentation.legalUpdates.NewsScreen
 import org.koin.compose.KoinApplication
 
 @Composable

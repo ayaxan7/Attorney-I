@@ -1,5 +1,6 @@
-package com.ayaan.attorneyi.presentation.ui
+package com.ayaan.attorneyi.presentation.legalUpdates
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -17,12 +18,16 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.ayaan.attorneyi.AppLogger
 import com.ayaan.attorneyi.data.model.Article
-import com.ayaan.attorneyi.presentation.NewsUiState
-import com.ayaan.attorneyi.presentation.NewsViewModel
+import com.ayaan.attorneyi.presentation.legalUpdates.components.BreakingNewsToggle
+import com.ayaan.attorneyi.presentation.legalUpdates.components.CategoryFilters
+import com.ayaan.attorneyi.presentation.legalUpdates.components.HeaderSection
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.koin.compose.viewmodel.koinViewModel
+import com.ayaan.attorneyi.presentation.ui.DarkBackground
+import com.ayaan.attorneyi.presentation.legalUpdates.components.NewsList
+import com.ayaan.attorneyi.presentation.legalUpdates.state.ErrorState
 
 @Composable
 fun NewsScreen(
@@ -31,7 +36,12 @@ fun NewsScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     AppLogger.d("NewsScreen", "Current UI State: $uiState")
-    BoxWithConstraints(modifier = modifier.fillMaxSize()) {
+
+    BoxWithConstraints(
+        modifier = modifier
+            .fillMaxSize()
+            .background(DarkBackground)
+    ) {
         val isLandscape = maxWidth > maxHeight
         val contentPadding = if (isLandscape) 24.dp else 16.dp
 
@@ -44,7 +54,6 @@ fun NewsScreen(
         )
     }
 }
-
 @Composable
 private fun NewsContent(
     uiState: NewsUiState,
@@ -58,13 +67,16 @@ private fun NewsContent(
             .fillMaxSize()
             .padding(horizontal = contentPadding)
     ) {
-        // Header
-        Text(
-            text = "Legal News India",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(vertical = 16.dp)
-        )
+        // Header with notification and filter icons
+        HeaderSection()
+
+        // Category filters
+        CategoryFilters()
+
+        // Breaking news toggle
+        BreakingNewsToggle()
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         when {
             uiState.isLoading -> {
@@ -90,7 +102,6 @@ private fun NewsContent(
         }
     }
 }
-
 @Composable
 private fun LoadingState() {
     Box(
@@ -111,74 +122,42 @@ private fun LoadingState() {
     }
 }
 
-@Composable
-private fun ErrorState(
-    error: String,
-    onRetry: () -> Unit
-) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "Error loading news",
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Medium
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = error,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = onRetry) {
-                Text("Retry")
-            }
-        }
-    }
-}
-
-@Composable
-private fun NewsList(
-    articles: List<Article>,
-    onRefresh: () -> Unit,
-    isRefreshing: Boolean,
-    isLandscape: Boolean
-) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        contentPadding = PaddingValues(vertical = 8.dp)
-    ) {
-        items(articles) { article ->
-            NewsItem(
-                article = article,
-                isLandscape = isLandscape
-            )
-        }
-    }
-}
-
-@Composable
-private fun NewsItem(
-    article: Article,
-    isLandscape: Boolean
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        if (isLandscape) {
-            LandscapeNewsItem(article)
-        } else {
-            PortraitNewsItem(article)
-        }
-    }
-}
+//@Composable
+//private fun NewsList(
+//    articles: List<Article>,
+//    onRefresh: () -> Unit,
+//    isRefreshing: Boolean,
+//    isLandscape: Boolean
+//) {
+//    LazyColumn(
+//        verticalArrangement = Arrangement.spacedBy(16.dp),
+//        contentPadding = PaddingValues(vertical = 8.dp)
+//    ) {
+//        items(articles) { article ->
+//            NewsItem(
+//                article = article,
+//                isLandscape = isLandscape
+//            )
+//        }
+//    }
+//}
+//
+//@Composable
+//private fun NewsItem(
+//    article: Article,
+//    isLandscape: Boolean
+//) {
+//    Card(
+//        modifier = Modifier.fillMaxWidth(),
+//        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+//    ) {
+//        if (isLandscape) {
+//            LandscapeNewsItem(article)
+//        } else {
+//            PortraitNewsItem(article)
+//        }
+//    }
+//}
 
 @Composable
 private fun PortraitNewsItem(article: Article) {

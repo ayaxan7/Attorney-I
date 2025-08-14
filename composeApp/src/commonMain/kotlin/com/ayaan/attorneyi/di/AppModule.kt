@@ -2,7 +2,7 @@ package com.ayaan.attorneyi.di
 
 import com.ayaan.attorneyi.data.remote.NewsApiService
 import com.ayaan.attorneyi.data.repository.NewsRepository
-import com.ayaan.attorneyi.presentation.NewsViewModel
+import com.ayaan.attorneyi.presentation.legalUpdates.NewsViewModel
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*

@@ -1,4 +1,4 @@
-package com.ayaan.attorneyi.presentation.legalUpdates
+package com.ayaan.attorneyi.presentation.legalUpdates.state
 
 import com.ayaan.attorneyi.data.model.LegalArticle
 

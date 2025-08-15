@@ -21,6 +21,7 @@ import com.ayaan.attorneyi.presentation.legalUpdates.components.NewsList
 import com.ayaan.attorneyi.presentation.legalUpdates.components.NoSearchResults
 import com.ayaan.attorneyi.presentation.legalUpdates.state.ErrorState
 import com.ayaan.attorneyi.presentation.legalUpdates.state.LoadingState
+import com.ayaan.attorneyi.presentation.legalUpdates.state.NewsUiState
 import com.ayaan.attorneyi.presentation.ui.DarkBackground
 import org.koin.compose.viewmodel.koinViewModel
 

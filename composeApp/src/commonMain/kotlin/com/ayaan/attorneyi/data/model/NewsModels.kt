@@ -41,14 +41,6 @@ data class LegalNewsErrorResponse(
     @SerialName("status") val status: String,
     @SerialName("message") val message: String
 )
-
-// Keep the old models for backward compatibility if needed
-@Serializable
-data class NewsResponse(
-    @SerialName("totalArticles") val totalArticles: Int,
-    @SerialName("articles") val articles: List<Article>
-)
-
 @Serializable
 data class Article(
     @SerialName("title") val title: String,

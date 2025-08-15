@@ -99,13 +99,4 @@ class NewsApiService(
             Result.failure(e)
         }
     }
-
-    // Keep the old method for backward compatibility during transition
-    suspend fun searchNews(
-        page: Int = 1,
-        maxResults: Int = 10
-    ): Result<LegalNewsResponse> {
-        // Redirect to new API
-        return getLatestNews()
-    }
 }

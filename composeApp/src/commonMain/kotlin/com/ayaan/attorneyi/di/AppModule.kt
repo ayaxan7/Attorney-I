@@ -32,7 +32,6 @@ val networkModule = module {
     }
 }
 
-// Manual modules - keeping your existing AttorneyI app working
 val dataModuleManual = module {
     single { NewsApiService(get()) }
     single { NewsRepository(get()) }
@@ -42,8 +41,6 @@ val viewModelModuleManual = module {
     viewModel { NewsViewModel(get()) }
 }
 
-// Traditional modules for existing AttorneyI functionality
-// These continue to work exactly as before
 val appModules = listOf(
     networkModule,
     dataModuleManual,

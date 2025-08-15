@@ -20,6 +20,7 @@ import com.ayaan.attorneyi.AppLogger
 import com.ayaan.attorneyi.data.model.LegalArticle
 import com.ayaan.attorneyi.presentation.legalUpdates.components.BreakingNewsToggle
 import com.ayaan.attorneyi.presentation.legalUpdates.components.HeaderSection
+import com.ayaan.attorneyi.presentation.legalUpdates.components.LegalCategoryFilters
 import com.ayaan.attorneyi.presentation.legalUpdates.components.NewsList
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
@@ -111,56 +112,5 @@ private fun NewsContent(
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun LegalCategoryFilters(
-    availableTags: List<String>,
-    selectedTag: String?,
-    onTagSelected: (String) -> Unit,
-    onClearFilter: () -> Unit
-) {
-    Column {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "Legal Categories:",
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-
-            if (selectedTag != null) {
-                TextButton(onClick = onClearFilter) {
-                    Text("Clear Filter")
-                }
-            }
-        }
-
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            items(availableTags) { tag ->
-                FilterChip(
-                    onClick = { onTagSelected(tag) },
-                    label = { Text(tag) },
-                    selected = selectedTag == tag
-                )
-            }
-        }
-    }
-}
-
-private fun formatPublishedDate(publishedAt: String): String {
-    return try {
-        val instant = Instant.parse(publishedAt)
-        val localDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
-        "${localDateTime.date} ${localDateTime.time.hour}:${localDateTime.time.minute.toString().padStart(2, '0')}"
-    } catch (e: Exception) {
-        publishedAt
     }
 }

@@ -26,9 +26,13 @@ import com.ayaan.attorneyi.presentation.ui.TextSecondary
 @Composable
 fun NewsItem(
     article: LegalArticle,
-    isLandscape: Boolean
+    isLandscape: Boolean,
+    onOpenUrl: (String) -> Unit
 ) {
     Card(
+        onClick = {
+            onOpenUrl(article.url)
+        },
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = CardBackground
@@ -71,7 +75,7 @@ fun NewsItem(
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 color = TextPrimary,
-                maxLines = 3,
+                maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 fontSize = 20.sp,
                 lineHeight = 26.sp

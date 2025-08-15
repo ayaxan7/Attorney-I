@@ -44,30 +44,30 @@ fun NewsItem(
             modifier = Modifier.padding(20.dp)
         ) {
             // Legal tags
-            if (article.tags.isNotEmpty()) {
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    items(article.tags) { tag ->
-                        AssistChip(
-                            onClick = { },
-                            label = {
-                                Text(
-                                    text = tag,
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = GoldAccent
-                                )
-                            },
-                            colors = AssistChipDefaults.assistChipColors(
-                                containerColor = GoldAccent.copy(alpha = 0.1f),
-                                labelColor = GoldAccent
-                            )
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.height(12.dp))
-            }
+//            if (article.tags.isNotEmpty()) {
+//                LazyRow(
+//                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+//                    modifier = Modifier.fillMaxWidth()
+//                ) {
+//                    items(article.tags) { tag ->
+//                        AssistChip(
+//                            onClick = { },
+//                            label = {
+//                                Text(
+//                                    text = tag,
+//                                    style = MaterialTheme.typography.labelSmall,
+//                                    color = GoldAccent
+//                                )
+//                            },
+//                            colors = AssistChipDefaults.assistChipColors(
+//                                containerColor = GoldAccent.copy(alpha = 0.1f),
+//                                labelColor = GoldAccent
+//                            )
+//                        )
+//                    }
+//                }
+//                Spacer(modifier = Modifier.height(12.dp))
+//            }
 
             // Title
             Text(

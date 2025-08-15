@@ -8,5 +8,9 @@ data class NewsUiState(
     val error: String? = null,
     val isRefreshing: Boolean = false,
     val selectedTag: String? = null,
-    val availableTags: List<String> = listOf("Corporate", "Criminal", "International", "Privacy")
+    val availableTags: List<String> = listOf("Corporate", "Criminal", "International", "Privacy"),
+    val isSearchActive: Boolean = false,
+    val searchQuery: String = "",
+    val filteredArticles: List<LegalArticle> = emptyList(),
+    val isSearching: Boolean = false
 )

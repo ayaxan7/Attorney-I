@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import org.koin.core.annotation.Single
 
 @Single
@@ -17,6 +19,8 @@ class NewsViewModel(
 
     private val _uiState = MutableStateFlow(NewsUiState())
     val uiState: StateFlow<NewsUiState> = _uiState.asStateFlow()
+
+    private var searchJob: Job? = null
 
     init {
         loadLatestNews()
@@ -93,6 +97,89 @@ class NewsViewModel(
      */
     fun clearTagFilter() {
         loadLatestNews()
+    }
+
+    /**
+     * Toggle search mode on/off
+     */
+    fun toggleSearch() {
+        val currentState = _uiState.value
+        _uiState.value = currentState.copy(
+            isSearchActive = !currentState.isSearchActive,
+            searchQuery = if (!currentState.isSearchActive) "" else currentState.searchQuery,
+            filteredArticles = if (!currentState.isSearchActive) emptyList() else currentState.filteredArticles
+        )
+    }
+
+    /**
+     * Update search query and perform search
+     */
+    fun updateSearchQuery(query: String) {
+        _uiState.value = _uiState.value.copy(searchQuery = query)
+
+        // Cancel previous search job
+        searchJob?.cancel()
+
+        // Debounce search to avoid too many calls
+        searchJob = viewModelScope.launch {
+            delay(300) // Wait 300ms before searching
+            performSearch(query)
+        }
+    }
+
+    /**
+     * Perform local search on articles
+     */
+    private fun performSearch(query: String) {
+        val currentArticles = _uiState.value.articles
+
+        if (query.isBlank()) {
+            _uiState.value = _uiState.value.copy(
+                filteredArticles = emptyList(),
+                isSearching = false
+            )
+            return
+        }
+
+        _uiState.value = _uiState.value.copy(isSearching = true)
+
+        val filteredArticles = currentArticles.filter { article ->
+            val queryLower = query.lowercase()
+            article.title.lowercase().contains(queryLower) ||
+                    article.description?.lowercase()?.contains(queryLower) == true ||
+                    article.tags.any { tag -> tag.lowercase().contains(queryLower) } ||
+                    article.source.name.lowercase().contains(queryLower)
+        }
+
+        _uiState.value = _uiState.value.copy(
+            filteredArticles = filteredArticles,
+            isSearching = false
+        )
+    }
+
+    /**
+     * Clear search and return to normal view
+     */
+    fun clearSearch() {
+        searchJob?.cancel()
+        _uiState.value = _uiState.value.copy(
+            isSearchActive = false,
+            searchQuery = "",
+            filteredArticles = emptyList(),
+            isSearching = false
+        )
+    }
+
+    /**
+     * Get current articles to display (either filtered or normal)
+     */
+    fun getCurrentArticles(): List<com.ayaan.attorneyi.data.model.LegalArticle> {
+        val state = _uiState.value
+        return if (state.isSearchActive && state.searchQuery.isNotBlank()) {
+            state.filteredArticles
+        } else {
+            state.articles
+        }
     }
 
     // Keep old methods for backward compatibility

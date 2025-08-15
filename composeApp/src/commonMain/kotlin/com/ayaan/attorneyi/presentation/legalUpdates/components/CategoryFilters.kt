@@ -28,11 +28,11 @@ fun LegalCategoryFilters(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "Legal Categories:",
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+//            Text(
+//                text = "Legal Categories:",
+//                style = MaterialTheme.typography.labelMedium,
+//                color = MaterialTheme.colorScheme.onSurfaceVariant
+//            )
 
             if (selectedTag != null) {
                 TextButton(onClick = onClearFilter) {
@@ -40,16 +40,36 @@ fun LegalCategoryFilters(
                 }
             }
         }
-
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxWidth()
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            contentPadding = PaddingValues(vertical = 16.dp)
         ) {
             items(availableTags) { tag ->
                 FilterChip(
                     onClick = { onTagSelected(tag) },
-                    label = { Text(tag) },
-                    selected = selectedTag == tag
+                    label = {
+                        Text(
+                            text = tag,
+                            color = if (selectedTag == tag) DarkBackground else TextSecondary
+                        )
+                    },
+                    selected = selectedTag == tag,
+                    colors = FilterChipDefaults.filterChipColors(
+                        selectedContainerColor = GoldAccent,
+                        containerColor = CardBackground,
+                        selectedLabelColor = DarkBackground,
+                        labelColor = TextSecondary
+                    ),
+                    border = FilterChipDefaults.filterChipBorder(
+                        borderColor = Color.Transparent,
+                        selectedBorderColor = Color.Transparent,
+                        enabled = true,
+                        selected = selectedTag == tag,
+                        disabledBorderColor = Color.Transparent,
+                        disabledSelectedBorderColor = Color.Transparent,
+                        borderWidth = 0.dp,
+                        selectedBorderWidth = 0.dp
+                    )
                 )
             }
         }

@@ -5,11 +5,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
-import com.ayaan.attorneyi.data.model.Article
+import com.ayaan.attorneyi.data.model.LegalArticle
 import androidx.compose.foundation.lazy.items
+
 @Composable
 fun NewsList(
-    articles: List<Article>,
+    articles: List<LegalArticle>,
     onRefresh: () -> Unit,
     isRefreshing: Boolean,
     isLandscape: Boolean

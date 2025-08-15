@@ -1,6 +1,6 @@
 package com.ayaan.attorneyi.presentation.legalUpdates.components
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -14,7 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ayaan.attorneyi.data.model.Article
+import com.ayaan.attorneyi.data.model.LegalArticle
 import com.ayaan.attorneyi.presentation.ui.CardBackground
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
@@ -25,7 +25,7 @@ import com.ayaan.attorneyi.presentation.ui.TextSecondary
 
 @Composable
 fun NewsItem(
-    article: Article,
+    article: LegalArticle,
     isLandscape: Boolean
 ) {
     Card(
@@ -39,6 +39,32 @@ fun NewsItem(
         Column(
             modifier = Modifier.padding(20.dp)
         ) {
+            // Legal tags
+            if (article.tags.isNotEmpty()) {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    items(article.tags) { tag ->
+                        AssistChip(
+                            onClick = { },
+                            label = {
+                                Text(
+                                    text = tag,
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = GoldAccent
+                                )
+                            },
+                            colors = AssistChipDefaults.assistChipColors(
+                                containerColor = GoldAccent.copy(alpha = 0.1f),
+                                labelColor = GoldAccent
+                            )
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+
             // Title
             Text(
                 text = article.title,
@@ -66,55 +92,55 @@ fun NewsItem(
                 Spacer(modifier = Modifier.height(16.dp))
             }
 
-            // Bottom row with time and actions
+            // Bottom row with source, time and actions
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = formatPublishedDate(article.publishedAt),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = TextSecondary
-                )
+                Column {
+                    Text(
+                        text = article.source.name,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = GoldAccent,
+                        fontWeight = FontWeight.Medium
+                    )
+                    Text(
+                        text = formatPublishedDate(article.publishedAt),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = TextSecondary
+                    )
+                }
 
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.BookmarkBorder,
-                        contentDescription = "Bookmark",
-                        tint = GoldAccent,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Icon(
-                        imageVector = Icons.Default.Share,
-                        contentDescription = "Share",
-                        tint = GoldAccent,
-                        modifier = Modifier.size(20.dp)
-                    )
+                    IconButton(onClick = { /* Handle bookmark */ }) {
+                        Icon(
+                            Icons.Default.BookmarkBorder,
+                            contentDescription = "Bookmark",
+                            tint = GoldAccent
+                        )
+                    }
+                    IconButton(onClick = { /* Handle share */ }) {
+                        Icon(
+                            Icons.Default.Share,
+                            contentDescription = "Share",
+                            tint = GoldAccent
+                        )
+                    }
                 }
             }
         }
     }
 }
+
 private fun formatPublishedDate(publishedAt: String): String {
     return try {
         val instant = Instant.parse(publishedAt)
         val localDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
-        val now = kotlinx.datetime.Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-
-        val hoursAgo = (now.hour - localDateTime.hour).let {
-            if (it < 0) it + 24 else it
-        }
-
-        when {
-            hoursAgo < 1 -> "Just now"
-            hoursAgo == 1 -> "1 hour ago"
-            hoursAgo < 24 -> "$hoursAgo hours ago"
-            else -> "1 day ago"
-        }
+        "${localDateTime.date} ${localDateTime.time.hour}:${localDateTime.time.minute.toString().padStart(2, '0')}"
     } catch (e: Exception) {
-        "Unknown time"
+        publishedAt
     }
 }

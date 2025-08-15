@@ -2,7 +2,7 @@ package com.ayaan.attorneyi.presentation.legalUpdates
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -17,16 +17,15 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.ayaan.attorneyi.AppLogger
-import com.ayaan.attorneyi.data.model.Article
+import com.ayaan.attorneyi.data.model.LegalArticle
 import com.ayaan.attorneyi.presentation.legalUpdates.components.BreakingNewsToggle
-import com.ayaan.attorneyi.presentation.legalUpdates.components.CategoryFilters
 import com.ayaan.attorneyi.presentation.legalUpdates.components.HeaderSection
+import com.ayaan.attorneyi.presentation.legalUpdates.components.NewsList
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.koin.compose.viewmodel.koinViewModel
 import com.ayaan.attorneyi.presentation.ui.DarkBackground
-import com.ayaan.attorneyi.presentation.legalUpdates.components.NewsList
 import com.ayaan.attorneyi.presentation.legalUpdates.state.ErrorState
 import com.ayaan.attorneyi.presentation.legalUpdates.state.LoadingState
 
@@ -50,16 +49,21 @@ fun NewsScreen(
             uiState = uiState,
             onRetry = viewModel::retry,
             onRefresh = viewModel::refresh,
+            onTagSelected = viewModel::loadNewsByTag,
+            onClearFilter = viewModel::clearTagFilter,
             contentPadding = contentPadding,
             isLandscape = isLandscape
         )
     }
 }
+
 @Composable
 private fun NewsContent(
     uiState: NewsUiState,
     onRetry: () -> Unit,
     onRefresh: () -> Unit,
+    onTagSelected: (String) -> Unit,
+    onClearFilter: () -> Unit,
     contentPadding: Dp,
     isLandscape: Boolean
 ) {
@@ -70,10 +74,13 @@ private fun NewsContent(
                 .fillMaxSize()
                 .padding(horizontal = contentPadding)
         ) {
-
-
-            // Category filters
-            CategoryFilters()
+            // Legal category filters with tag functionality
+            LegalCategoryFilters(
+                availableTags = uiState.availableTags,
+                selectedTag = uiState.selectedTag,
+                onTagSelected = onTagSelected,
+                onClearFilter = onClearFilter
+            )
 
             // Breaking news toggle
             BreakingNewsToggle()
@@ -94,6 +101,7 @@ private fun NewsContent(
                 }
 
                 else -> {
+                    // Use the existing NewsList component
                     NewsList(
                         articles = uiState.articles,
                         onRefresh = onRefresh,
@@ -107,131 +115,40 @@ private fun NewsContent(
 }
 
 @Composable
-private fun PortraitNewsItem(article: Article) {
-    Column(
-        modifier = Modifier.padding(16.dp)
-    ) {
-        // Image
-        if (!article.image.isNullOrEmpty()) {
-            AsyncImage(
-                model = article.image,
-                contentDescription = article.title,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-        }
-
-        // Title
-        Text(
-            text = article.title,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
-            maxLines = 3,
-            overflow = TextOverflow.Ellipsis
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Description
-        if (!article.description.isNullOrEmpty()) {
-            Text(
-                text = article.description,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 3,
-                overflow = TextOverflow.Ellipsis
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-
-        // Source and date
+private fun LegalCategoryFilters(
+    availableTags: List<String>,
+    selectedTag: String?,
+    onTagSelected: (String) -> Unit,
+    onClearFilter: () -> Unit
+) {
+    Column {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = article.source.name,
+                text = "Legal Categories:",
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Medium
-            )
-
-            Text(
-                text = formatPublishedDate(article.publishedAt),
-                style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-        }
-    }
-}
 
-@Composable
-private fun LandscapeNewsItem(article: Article) {
-    Row(
-        modifier = Modifier.padding(16.dp)
-    ) {
-        // Image
-        if (!article.image.isNullOrEmpty()) {
-            AsyncImage(
-                model = article.image,
-                contentDescription = article.title,
-                modifier = Modifier
-                    .size(120.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-        }
-
-        // Content
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
-            // Title
-            Text(
-                text = article.title,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
-
-            Spacer(modifier = Modifier.height(6.dp))
-
-            // Description
-            if (!article.description.isNullOrEmpty()) {
-                Text(
-                    text = article.description,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Spacer(modifier = Modifier.height(8.dp))
+            if (selectedTag != null) {
+                TextButton(onClick = onClearFilter) {
+                    Text("Clear Filter")
+                }
             }
+        }
 
-            // Source and date
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = article.source.name,
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.Medium
-                )
-
-                Text(
-                    text = formatPublishedDate(article.publishedAt),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            items(availableTags) { tag ->
+                FilterChip(
+                    onClick = { onTagSelected(tag) },
+                    label = { Text(tag) },
+                    selected = selectedTag == tag
                 )
             }
         }
@@ -242,8 +159,8 @@ private fun formatPublishedDate(publishedAt: String): String {
     return try {
         val instant = Instant.parse(publishedAt)
         val localDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
-        "${localDateTime.dayOfMonth}/${localDateTime.monthNumber}/${localDateTime.year}"
+        "${localDateTime.date} ${localDateTime.time.hour}:${localDateTime.time.minute.toString().padStart(2, '0')}"
     } catch (e: Exception) {
-        "Unknown date"
+        publishedAt
     }
 }

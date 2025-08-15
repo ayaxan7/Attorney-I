@@ -4,7 +4,9 @@ import com.ayaan.attorneyi.data.model.Article
 import com.ayaan.attorneyi.data.remote.NewsApiService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import org.koin.core.annotation.Single
 
+@Single
 class NewsRepository(
     private val apiService: NewsApiService
 ) {

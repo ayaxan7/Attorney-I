@@ -7,7 +7,9 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import org.koin.core.annotation.Single
 
+@Single
 class NewsApiService(
     private val httpClient: HttpClient
 ) {

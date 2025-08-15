@@ -91,48 +91,11 @@ fun HeaderSection(
             }
         }
         if (isSearchActive) {
-            // Search bar
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                OutlinedTextField(
-                    value = searchQuery,
-                    onValueChange = onSearchQueryChange,
-                    placeholder = {
-                        Text(
-                            "Search legal news...",
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    },
-                    leadingIcon = {
-                        Icon(
-                            Icons.Default.Search,
-                            contentDescription = "Search",
-                            tint = GoldAccent
-                        )
-                    },
-                    trailingIcon = {
-                        IconButton(onClick = onSearchClear) {
-                            Icon(
-                                Icons.Default.Close,
-                                contentDescription = "Close search",
-                                tint = GoldAccent
-                            )
-                        }
-                    },
-                    modifier = Modifier.weight(1f),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = GoldAccent,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.outline,
-                        focusedTextColor = TextPrimary,
-                        unfocusedTextColor = TextPrimary
-                    ),
-                    singleLine = true
-                )
-            }
+            SearchBar(
+                searchQuery = searchQuery,
+                onSearchQueryChange = onSearchQueryChange,
+                onSearchClear = onSearchClear,
+            )
         } else {
             // Legal Updates title with icons - with padding restored for this section
             Row(

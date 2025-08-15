@@ -9,6 +9,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.serialization.json.Json
+import kotlinx.datetime.Clock
 import org.koin.core.annotation.Single
 
 @Single
@@ -26,13 +27,22 @@ class NewsApiService(
      */
     suspend fun getLatestNews(): Result<LegalNewsResponse> {
         return try {
-            println("Fetching latest legal news from: ${ApiConfig.BASE_URL}/news")
+            val timestamp = Clock.System.now().epochSeconds
+            println("Fetching latest legal news from: ${ApiConfig.BASE_URL}/news (timestamp: $timestamp)")
 
-            val response = httpClient.get("${ApiConfig.BASE_URL}/news")
+            val response = httpClient.get("${ApiConfig.BASE_URL}/news") {
+                // Add cache-busting headers to ensure fresh data
+                header("Cache-Control", "no-cache, no-store, must-revalidate")
+                header("Pragma", "no-cache")
+                header("Expires", "0")
+                // Add timestamp parameter to ensure fresh requests
+                parameter("_t", timestamp)
+            }
 
             when {
                 response.status.isSuccess() -> {
                     val newsResponse = response.body<LegalNewsResponse>()
+                    println("Successfully fetched ${newsResponse.data.articles.size} articles")
                     Result.success(newsResponse)
                 }
                 response.status == HttpStatusCode.InternalServerError -> {
@@ -66,15 +76,23 @@ class NewsApiService(
      */
     suspend fun getNewsByTag(tag: String): Result<LegalNewsResponse> {
         return try {
-            println("Fetching legal news by tag '$tag' from: ${ApiConfig.BASE_URL}/news")
+            val timestamp = Clock.System.now().epochSeconds
+            println("Fetching legal news by tag '$tag' from: ${ApiConfig.BASE_URL}/news (timestamp: $timestamp)")
 
             val response = httpClient.get("${ApiConfig.BASE_URL}/news") {
                 parameter("tag", tag)
+                // Add cache-busting headers to ensure fresh data
+                header("Cache-Control", "no-cache, no-store, must-revalidate")
+                header("Pragma", "no-cache")
+                header("Expires", "0")
+                // Add timestamp parameter to ensure fresh requests
+                parameter("_t", timestamp)
             }
 
             when {
                 response.status.isSuccess() -> {
                     val newsResponse = response.body<LegalNewsResponse>()
+                    println("Successfully fetched ${newsResponse.data.articles.size} articles for tag '$tag'")
                     Result.success(newsResponse)
                 }
                 response.status == HttpStatusCode.InternalServerError -> {

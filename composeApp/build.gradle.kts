@@ -1,3 +1,4 @@
+// build.gradle.kts (app level)
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -26,7 +27,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -37,12 +38,14 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     sourceSets {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.android)
+            // Accompanist SwipeRefresh - Android only
+            implementation(libs.accompanist.swiperefresh)
         }
 
         iosMain.dependencies {
@@ -78,6 +81,9 @@ kotlin {
             // Image loading
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor3)
+
+            // SwipeRefresh
+            implementation(libs.accompanist.swiperefresh)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

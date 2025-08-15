@@ -1,3 +1,4 @@
+
 [versions]
 agp = "8.12.0"
 android-compileSdk = "35"
@@ -19,6 +20,7 @@ koinAnnotations = "2.1.0"
 kotlinx-serialization = "1.8.0"
 kotlinx-datetime = "0.6.1"
 coil = "3.0.4"
+accompanist = "0.36.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -54,6 +56,9 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 # Image loading
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
+
+# Accompanist
+accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

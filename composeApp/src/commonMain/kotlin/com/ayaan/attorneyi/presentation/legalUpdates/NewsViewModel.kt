@@ -38,24 +38,35 @@ class NewsViewModel(
                 selectedTag = null
             )
 
-            newsRepository.getLatestNews().collect { result ->
-                result.fold(
-                    onSuccess = { articles ->
-                        _uiState.value = _uiState.value.copy(
-                            isLoading = false,
-                            articles = articles,
-                            error = null
-                        )
-                    },
-                    onFailure = { exception ->
-                        _uiState.value = _uiState.value.copy(
-                            isLoading = false,
-                            error = exception.message ?: "Unknown error occurred"
-                        )
-                        AppLogger.d("NewsViewModel", "Error loading news: ${exception.message}")
-                        exception.printStackTrace()
-                    }
+            try {
+                newsRepository.getLatestNews().collect { result ->
+                    result.fold(
+                        onSuccess = { articles ->
+                            _uiState.value = _uiState.value.copy(
+                                isLoading = false,
+                                articles = articles,
+                                error = null,
+                                // Clear any existing filtered articles to force refresh
+                                filteredArticles = emptyList()
+                            )
+                            AppLogger.d("NewsViewModel", "Latest news loaded: ${articles.size} articles")
+                        },
+                        onFailure = { exception ->
+                            _uiState.value = _uiState.value.copy(
+                                isLoading = false,
+                                error = exception.message ?: "Unknown error occurred"
+                            )
+                            AppLogger.d("NewsViewModel", "Error loading news: ${exception.message}")
+                            exception.printStackTrace()
+                        }
+                    )
+                }
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    error = e.message ?: "Failed to load news"
                 )
+                AppLogger.d("NewsViewModel", "Exception in loadLatestNews: ${e.message}")
             }
         }
     }
@@ -71,24 +82,35 @@ class NewsViewModel(
                 selectedTag = tag
             )
 
-            newsRepository.getNewsByTag(tag).collect { result ->
-                result.fold(
-                    onSuccess = { articles ->
-                        _uiState.value = _uiState.value.copy(
-                            isLoading = false,
-                            articles = articles,
-                            error = null
-                        )
-                    },
-                    onFailure = { exception ->
-                        _uiState.value = _uiState.value.copy(
-                            isLoading = false,
-                            error = exception.message ?: "Unknown error occurred"
-                        )
-                        AppLogger.d("NewsViewModel", "Error loading news by tag '$tag': ${exception.message}")
-                        exception.printStackTrace()
-                    }
+            try {
+                newsRepository.getNewsByTag(tag).collect { result ->
+                    result.fold(
+                        onSuccess = { articles ->
+                            _uiState.value = _uiState.value.copy(
+                                isLoading = false,
+                                articles = articles,
+                                error = null,
+                                // Clear any existing filtered articles to force refresh
+                                filteredArticles = emptyList()
+                            )
+                            AppLogger.d("NewsViewModel", "News loaded for tag '$tag': ${articles.size} articles")
+                        },
+                        onFailure = { exception ->
+                            _uiState.value = _uiState.value.copy(
+                                isLoading = false,
+                                error = exception.message ?: "Unknown error occurred"
+                            )
+                            AppLogger.d("NewsViewModel", "Error loading news by tag '$tag': ${exception.message}")
+                            exception.printStackTrace()
+                        }
+                    )
+                }
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    error = e.message ?: "Failed to load news for tag: $tag"
                 )
+                AppLogger.d("NewsViewModel", "Exception in loadNewsByTag: ${e.message}")
             }
         }
     }
@@ -184,10 +206,6 @@ class NewsViewModel(
     }
 
     // Keep old methods for backward compatibility
-    fun loadNews() {
-        loadLatestNews()
-    }
-
     fun retry() {
         if (_uiState.value.selectedTag != null) {
             loadNewsByTag(_uiState.value.selectedTag!!)
@@ -196,33 +214,51 @@ class NewsViewModel(
         }
     }
 
+    /**
+     * Enhanced refresh function to ensure fresh API calls with immediate list updates
+     */
     fun refresh() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isRefreshing = true)
 
-            val currentTag = _uiState.value.selectedTag
-            val repository = if (currentTag != null) {
-                newsRepository.getNewsByTag(currentTag)
-            } else {
-                newsRepository.getLatestNews()
-            }
+            try {
+                val currentTag = _uiState.value.selectedTag
+                val result = if (currentTag != null) {
+                    newsRepository.refreshNewsByTag(currentTag)
+                } else {
+                    newsRepository.refreshLatestNews()
+                }
 
-            repository.collect { result ->
                 result.fold(
                     onSuccess = { articles ->
                         _uiState.value = _uiState.value.copy(
                             isRefreshing = false,
                             articles = articles,
-                            error = null
+                            error = null,
+                            // Clear filtered articles to ensure fresh display
+                            filteredArticles = emptyList()
                         )
+                        AppLogger.d("NewsViewModel", "Refresh successful: ${articles.size} articles loaded")
+
+                        // If we're in search mode, re-apply the search to the new data
+                        if (_uiState.value.isSearchActive && _uiState.value.searchQuery.isNotBlank()) {
+                            performSearch(_uiState.value.searchQuery)
+                        }
                     },
                     onFailure = { exception ->
                         _uiState.value = _uiState.value.copy(
                             isRefreshing = false,
-                            error = exception.message ?: "Unknown error occurred"
+                            error = exception.message ?: "Failed to refresh news"
                         )
+                        AppLogger.d("NewsViewModel", "Refresh failed: ${exception.message}")
                     }
                 )
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    isRefreshing = false,
+                    error = e.message ?: "Failed to refresh news"
+                )
+                AppLogger.d("NewsViewModel", "Refresh exception: ${e.message}")
             }
         }
     }

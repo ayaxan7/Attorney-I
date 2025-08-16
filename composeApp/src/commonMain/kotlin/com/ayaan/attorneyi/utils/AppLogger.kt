@@ -1,4 +1,4 @@
-package com.ayaan.attorneyi
+package com.ayaan.attorneyi.utils
 
 expect object AppLogger {
     fun e(tag: String, message: String, throwable: Throwable? = null)

@@ -1,4 +1,4 @@
-package com.ayaan.attorneyi
+package com.ayaan.attorneyi.utils
 
 import android.util.Log
 

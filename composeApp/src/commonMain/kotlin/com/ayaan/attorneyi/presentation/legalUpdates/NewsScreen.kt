@@ -13,7 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.ayaan.attorneyi.AppLogger
+import com.ayaan.attorneyi.utils.AppLogger
 import com.ayaan.attorneyi.presentation.legalUpdates.components.BreakingNewsToggle
 import com.ayaan.attorneyi.presentation.legalUpdates.components.HeaderSection
 import com.ayaan.attorneyi.presentation.legalUpdates.components.LegalCategoryFilters

@@ -29,6 +29,7 @@ import com.ayaan.attorneyi.presentation.ui.CardBackground
 import com.ayaan.attorneyi.presentation.ui.GoldAccent
 import com.ayaan.attorneyi.presentation.ui.TextPrimary
 import com.ayaan.attorneyi.presentation.ui.TextSecondary
+import com.ayaan.attorneyi.utils.ShareServiceProvider
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -110,7 +111,13 @@ fun NewsItem(
                             tint = GoldAccent
                         )
                     }
-                    IconButton(onClick = { /* Handle share */ }) {
+                    IconButton(onClick = {
+                        shareContent(
+                            ShareServiceProvider(),
+                            article.title,
+                            article.url
+                        )
+                    }) {
                         Icon(
                             Icons.Default.Share, contentDescription = "Share", tint = GoldAccent
                         )
@@ -131,4 +138,8 @@ private fun formatPublishedDate(publishedAt: String): String {
     } catch (e: Exception) {
         publishedAt
     }
+}
+private fun shareContent(serviceProvider: ShareServiceProvider, title: String, url: String) {
+    val shareService = serviceProvider.getShareService()
+    shareService.share(title, url)
 }

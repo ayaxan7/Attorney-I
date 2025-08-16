@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.ayaan.attorneyi.presentation.ui.CardBackground
+import com.ayaan.attorneyi.presentation.ui.GoldAccent
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -30,7 +31,7 @@ fun LoadingState() {
             Text(
                 text = "Loading latest legal news...",
                 style = MaterialTheme.typography.bodyMedium,
-                color = CardBackground
+                color = GoldAccent
             )
         }
     }

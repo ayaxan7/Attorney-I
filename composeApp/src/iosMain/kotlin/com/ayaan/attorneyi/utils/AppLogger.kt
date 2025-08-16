@@ -1,4 +1,4 @@
-package com.ayaan.attorneyi
+package com.ayaan.attorneyi.utils
 
 import platform.Foundation.NSLog
 

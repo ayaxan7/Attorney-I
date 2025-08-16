@@ -112,10 +112,16 @@ fun NewsItem(
                         )
                     }
                     IconButton(onClick = {
-                        shareContent(
+//                        shareContent(
+//                            ShareServiceProvider(),
+//                            article.title,
+//                            article.url
+//                        )
+                        shareContentWithImage(
                             ShareServiceProvider(),
                             article.title,
-                            article.url
+                            article.url,
+                            article.image ?: ""
                         )
                     }) {
                         Icon(
@@ -142,4 +148,13 @@ private fun formatPublishedDate(publishedAt: String): String {
 private fun shareContent(serviceProvider: ShareServiceProvider, title: String, url: String) {
     val shareService = serviceProvider.getShareService()
     shareService.share(title, url)
+}
+fun shareContentWithImage(
+    serviceProvider: ShareServiceProvider,
+    title: String,
+    url: String,
+    imagePath: String
+) {
+    val shareService = serviceProvider.getShareService()
+    shareService.shareWithImage(title, url, imagePath)
 }

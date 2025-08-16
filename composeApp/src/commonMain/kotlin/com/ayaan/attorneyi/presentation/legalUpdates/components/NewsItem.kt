@@ -1,13 +1,23 @@
 package com.ayaan.attorneyi.presentation.legalUpdates.components
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -16,18 +26,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ayaan.attorneyi.data.model.LegalArticle
 import com.ayaan.attorneyi.presentation.ui.CardBackground
-import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import com.ayaan.attorneyi.presentation.ui.GoldAccent
 import com.ayaan.attorneyi.presentation.ui.TextPrimary
 import com.ayaan.attorneyi.presentation.ui.TextSecondary
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 @Composable
 fun NewsItem(
-    article: LegalArticle,
-    isLandscape: Boolean,
-    onOpenUrl: (String) -> Unit
+    article: LegalArticle, isLandscape: Boolean, onOpenUrl: (String) -> Unit
 ) {
     Card(
         onClick = {
@@ -128,9 +136,7 @@ fun NewsItem(
                     }
                     IconButton(onClick = { /* Handle share */ }) {
                         Icon(
-                            Icons.Default.Share,
-                            contentDescription = "Share",
-                            tint = GoldAccent
+                            Icons.Default.Share, contentDescription = "Share", tint = GoldAccent
                         )
                     }
                 }
@@ -143,7 +149,9 @@ private fun formatPublishedDate(publishedAt: String): String {
     return try {
         val instant = Instant.parse(publishedAt)
         val localDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
-        "${localDateTime.date} ${localDateTime.time.hour}:${localDateTime.time.minute.toString().padStart(2, '0')}"
+        "${localDateTime.date} ${localDateTime.time.hour}:${
+            localDateTime.time.minute.toString().padStart(2, '0')
+        }"
     } catch (e: Exception) {
         publishedAt
     }

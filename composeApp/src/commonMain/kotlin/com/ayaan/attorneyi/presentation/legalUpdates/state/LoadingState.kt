@@ -1,38 +1,25 @@
 package com.ayaan.attorneyi.presentation.legalUpdates.state
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
-import com.ayaan.attorneyi.AppLogger
-import com.ayaan.attorneyi.data.model.Article
 import com.ayaan.attorneyi.presentation.ui.CardBackground
-import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
-import org.koin.compose.viewmodel.koinViewModel
-import com.ayaan.attorneyi.presentation.ui.DarkBackground
-import com.ayaan.attorneyi.presentation.ui.GoldAccent
-import com.ayaan.attorneyi.presentation.ui.TextPrimary
-import com.ayaan.attorneyi.presentation.ui.TextSecondary
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
- fun LoadingState() {
+fun LoadingState() {
     Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -48,6 +35,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
         }
     }
 }
+
 @Preview
 @Composable
 fun LoadingStatePreview() {

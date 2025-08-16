@@ -3,29 +3,37 @@ package com.ayaan.attorneyi.presentation.legalUpdates.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Tune
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.jetbrains.compose.resources.painterResource
 import attorneyi.composeapp.generated.resources.Res
 import attorneyi.composeapp.generated.resources.legalupdatesheader
 import com.ayaan.attorneyi.presentation.ui.GoldAccent
 import com.ayaan.attorneyi.presentation.ui.TextPrimary
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun HeaderSection(
@@ -36,14 +44,11 @@ fun HeaderSection(
     onSearchClear: () -> Unit = {}
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(40.dp)
+            modifier = Modifier.fillMaxWidth().height(40.dp)
         ) {
             // Background Image from drawable
             Image(
@@ -55,13 +60,10 @@ fun HeaderSection(
 
             // Optional: Add a dark overlay for better text readability
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
+                modifier = Modifier.fillMaxSize().background(
                         Brush.horizontalGradient(
                             colors = listOf(
-                                Color.Black.copy(alpha = 0.6f),
-                                Color.Black.copy(alpha = 0.3f)
+                                Color.Black.copy(alpha = 0.6f), Color.Black.copy(alpha = 0.3f)
                             )
                         )
                     )
@@ -69,9 +71,7 @@ fun HeaderSection(
 
             // Content on top of the image
             Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp),
+                modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
@@ -115,10 +115,7 @@ fun HeaderSection(
                     imageVector = Icons.Default.Search,
                     contentDescription = "Search",
                     tint = GoldAccent,
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clickable { onSearchToggle() }
-                )
+                    modifier = Modifier.size(24.dp).clickable { onSearchToggle() })
             }
         }
     }

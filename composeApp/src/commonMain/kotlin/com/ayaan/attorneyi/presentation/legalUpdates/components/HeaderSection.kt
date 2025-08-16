@@ -109,13 +109,7 @@ fun HeaderSection(
                     fontWeight = FontWeight.Bold,
                     fontSize = 32.sp
                 )
-                Spacer(modifier = Modifier.weight(1f)) // Push icons to the right
-                Icon(
-                    imageVector = Icons.Default.Tune,
-                    contentDescription = "Filter",
-                    tint = GoldAccent,
-                    modifier = Modifier.size(24.dp)
-                )
+                Spacer(modifier = Modifier.weight(1f))
                 Spacer(modifier = Modifier.width(12.dp))
                 Icon(
                     imageVector = Icons.Default.Search,

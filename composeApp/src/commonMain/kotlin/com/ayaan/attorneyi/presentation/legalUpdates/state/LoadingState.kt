@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.ayaan.attorneyi.AppLogger
 import com.ayaan.attorneyi.data.model.Article
+import com.ayaan.attorneyi.presentation.ui.CardBackground
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -25,6 +26,8 @@ import com.ayaan.attorneyi.presentation.ui.DarkBackground
 import com.ayaan.attorneyi.presentation.ui.GoldAccent
 import com.ayaan.attorneyi.presentation.ui.TextPrimary
 import com.ayaan.attorneyi.presentation.ui.TextSecondary
+import org.jetbrains.compose.ui.tooling.preview.Preview
+
 @Composable
  fun LoadingState() {
     Box(
@@ -39,8 +42,14 @@ import com.ayaan.attorneyi.presentation.ui.TextSecondary
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "Loading latest legal news...",
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                color = CardBackground
             )
         }
     }
+}
+@Preview
+@Composable
+fun LoadingStatePreview() {
+    LoadingState()
 }

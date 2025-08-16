@@ -79,17 +79,7 @@ private fun NewsContent(
         Column(
             modifier = Modifier.fillMaxSize().padding(horizontal = contentPadding)
         ) {
-            // Show search results info if searching
-//            if (uiState.isSearchActive && uiState.searchQuery.isNotBlank()) {
-//                SearchResultsHeader(
-//                    query = uiState.searchQuery,
-//                    resultCount = uiState.filteredArticles.size,
-//                    isSearching = uiState.isSearching
-//                )
-//                Spacer(modifier = Modifier.height(8.dp))
-//            }
 
-            // Only show filters when not in search mode
             if (!uiState.isSearchActive) {
                 // Legal category filters with tag functionality
                 LegalCategoryFilters(
@@ -98,23 +88,18 @@ private fun NewsContent(
                     onTagSelected = onTagSelected,
                     onClearFilter = onClearFilter
                 )
-
                 // Breaking news toggle
                 BreakingNewsToggle()
-
                 Spacer(modifier = Modifier.height(16.dp))
             }
-
             when {
                 uiState.isLoading -> {
                     LoadingState()
                 }
-
                 // Show NoSearchResults when actively searching with no results (and no error)
                 uiState.isSearchActive && uiState.searchQuery.isNotBlank() && uiState.filteredArticles.isEmpty() && !uiState.isSearching && uiState.error == null -> {
                     NoSearchResults(query = uiState.searchQuery)
                 }
-
                 // Show error state only when there's an actual error
                 // This includes: network errors, API errors, etc. but NOT empty search results
                 uiState.error != null && (!uiState.isSearchActive || (uiState.isSearchActive && uiState.articles.isEmpty())) -> {

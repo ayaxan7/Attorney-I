@@ -41,15 +41,15 @@ data class LegalNewsErrorResponse(
     @SerialName("status") val status: String,
     @SerialName("message") val message: String
 )
-@Serializable
-data class Article(
-    @SerialName("title") val title: String,
-    @SerialName("description") val description: String?,
-    @SerialName("url") val url: String,
-    @SerialName("image") val image: String?,
-    @SerialName("publishedAt") val publishedAt: String,
-    @SerialName("source") val source: Source
-)
+//@Serializable
+//data class Article(
+//    @SerialName("title") val title: String,
+//    @SerialName("description") val description: String?,
+//    @SerialName("url") val url: String,
+//    @SerialName("image") val image: String?,
+//    @SerialName("publishedAt") val publishedAt: String,
+//    @SerialName("source") val source: Source
+//)
 
 @Serializable
 data class Source(

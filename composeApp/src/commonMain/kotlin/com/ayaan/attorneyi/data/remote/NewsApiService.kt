@@ -30,7 +30,7 @@ class NewsApiService(
             val timestamp = Clock.System.now().epochSeconds
             println("Fetching latest legal news from: ${ApiConfig.BASE_URL}/news (timestamp: $timestamp)")
 
-            val response = httpClient.get("${ApiConfig.BASE_URL}/news") {
+            val response = httpClient.get(ApiConfig.NEWS_ENDPOINT) {
                 // Add cache-busting headers to ensure fresh data
                 header("Cache-Control", "no-cache, no-store, must-revalidate")
                 header("Pragma", "no-cache")

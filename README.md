@@ -1,4 +1,4 @@
-# AttorneyI - Legal News & Updates Platform
+# Attorney-I
 
 ## Overview
 

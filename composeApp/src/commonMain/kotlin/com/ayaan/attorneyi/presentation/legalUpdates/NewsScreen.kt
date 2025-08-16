@@ -110,16 +110,19 @@ private fun NewsContent(
                     LoadingState()
                 }
 
-                uiState.error != null && getCurrentDisplayArticles(uiState).isEmpty() -> {
-                    ErrorState(
-                        error = uiState.error, onRetry = onRetry
-                    )
-                    AppLogger.d("NewsScreen", "Error state with message: ${uiState.error}")
+                // Show NoSearchResults when actively searching with no results (and no error)
+                uiState.isSearchActive && uiState.searchQuery.isNotBlank() && uiState.filteredArticles.isEmpty() && !uiState.isSearching && uiState.error == null -> {
+                    NoSearchResults(query = uiState.searchQuery)
                 }
 
-                uiState.isSearchActive && uiState.searchQuery.isNotBlank() && uiState.filteredArticles.isEmpty() && !uiState.isSearching -> {
-                    // No search results
-                    NoSearchResults(query = uiState.searchQuery)
+                // Show error state only when there's an actual error
+                // This includes: network errors, API errors, etc. but NOT empty search results
+                uiState.error != null && (!uiState.isSearchActive || (uiState.isSearchActive && uiState.articles.isEmpty())) -> {
+                    ErrorState(
+                        error = uiState.error,
+                        onRetry = onRetry
+                    )
+                    AppLogger.d("NewsScreen", "Error state with message: ${uiState.error}")
                 }
 
                 else -> {

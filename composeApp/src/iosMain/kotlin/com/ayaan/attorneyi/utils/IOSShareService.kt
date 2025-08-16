@@ -1,33 +1,32 @@
 package com.ayaan.attorneyi.utils
 
-import kotlinx.cinterop.BetaInteropApi
-import platform.Foundation.NSFileManager
-import platform.Foundation.NSString
-import platform.Foundation.NSURL
-import platform.Foundation.create
-import platform.UIKit.UIActivityViewController
-import platform.UIKit.UIApplication
-import platform.UIKit.UIImage
+import platform.UIKit.*
+import platform.Foundation.*
+import kotlinx.coroutines.*
 
 class IOSShareService : ShareService {
-    @OptIn(BetaInteropApi::class)
+    private val serviceScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     override fun share(title: String, url: String) {
         val activityItems = listOf(
             NSString.create(string = "$title\n$url")
         )
-        val activityViewController =
-            UIActivityViewController(activityItems = activityItems, applicationActivities = null)
+        val activityViewController = UIActivityViewController(
+            activityItems = activityItems,
+            applicationActivities = null
+        )
 
-        // Get the top-most view controller to present the activity view controller
         val rootViewController = UIApplication.sharedApplication.keyWindow?.rootViewController
-        rootViewController?.presentViewController(activityViewController, animated = true, completion = null)
+        rootViewController?.presentViewController(
+            activityViewController,
+            animated = true,
+            completion = null
+        )
     }
+
     override fun shareWithImage(title: String, url: String, imagePath: String) {
         val fileManager = NSFileManager.defaultManager
-        val imageUrl = NSURL.fileURLWithPath(imagePath)
 
         if (!fileManager.fileExistsAtPath(imagePath)) {
-            // Fallback to text-only sharing if image doesn't exist
             share(title, url)
             return
         }
@@ -35,10 +34,7 @@ class IOSShareService : ShareService {
         val image = UIImage.imageWithContentsOfFile(imagePath)
         val activityItems = mutableListOf<Any>()
 
-        // Add image if it exists
         image?.let { activityItems.add(it) }
-
-        // Add text content
         activityItems.add(NSString.create(string = "$title\n$url"))
 
         val activityViewController = UIActivityViewController(
@@ -52,6 +48,44 @@ class IOSShareService : ShareService {
             animated = true,
             completion = null
         )
+    }
+
+    override fun shareWithImageUrl(title: String, url: String, imageUrl: String, callback: (Boolean) -> Unit) {
+        if (imageUrl.isBlank()) {
+            callback(false)
+            share(title, url)
+            return
+        }
+
+        serviceScope.launch {
+            try {
+                val nsUrl = NSURL.URLWithString(imageUrl)
+                val data = NSData.dataWithContentsOfURL(nsUrl ?: return@launch)
+                val image = UIImage.imageWithData(data ?: return@launch)
+
+                if (image != null) {
+                    val activityItems = listOf(image, NSString.create(string = "$title\n$url"))
+                    val activityViewController = UIActivityViewController(
+                        activityItems = activityItems,
+                        applicationActivities = null
+                    )
+
+                    val rootViewController = UIApplication.sharedApplication.keyWindow?.rootViewController
+                    rootViewController?.presentViewController(
+                        activityViewController,
+                        animated = true,
+                        completion = null
+                    )
+                    callback(true)
+                } else {
+                    share(title, url)
+                    callback(false)
+                }
+            } catch (e: Exception) {
+                share(title, url)
+                callback(false)
+            }
+        }
     }
 }
 actual class ShareServiceProvider {

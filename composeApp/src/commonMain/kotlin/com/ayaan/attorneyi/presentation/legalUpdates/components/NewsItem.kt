@@ -29,6 +29,7 @@ import com.ayaan.attorneyi.presentation.ui.CardBackground
 import com.ayaan.attorneyi.presentation.ui.GoldAccent
 import com.ayaan.attorneyi.presentation.ui.TextPrimary
 import com.ayaan.attorneyi.presentation.ui.TextSecondary
+import com.ayaan.attorneyi.utils.AppLogger
 import com.ayaan.attorneyi.utils.ShareServiceProvider
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
@@ -117,7 +118,7 @@ fun NewsItem(
 //                            article.title,
 //                            article.url
 //                        )
-                        shareContentWithImage(
+                        shareContentWithImageUrl(
                             ShareServiceProvider(),
                             article.title,
                             article.url,
@@ -157,4 +158,19 @@ fun shareContentWithImage(
 ) {
     val shareService = serviceProvider.getShareService()
     shareService.shareWithImage(title, url, imagePath)
+}
+fun shareContentWithImageUrl(
+    serviceProvider: ShareServiceProvider,
+    title: String,
+    url: String,
+    imageUrl: String
+) {
+    val shareService = serviceProvider.getShareService()
+    shareService.shareWithImageUrl(title, url, imageUrl) { success ->
+        if (success) {
+            AppLogger.d("ShareService", "Successfully shared with image")
+        } else {
+            AppLogger.d("ShareService", "Shared without image (fallback)")
+        }
+    }
 }

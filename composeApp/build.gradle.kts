@@ -35,7 +35,6 @@ kotlin {
         version = "1.0"
         homepage = "https://medium.com"
         ios.deploymentTarget = "16.0"
-        // Add the framework block here
         framework {
             baseName = "ComposeApp"
             isStatic = true

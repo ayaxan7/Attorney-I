@@ -1,6 +1,7 @@
 package com.ayaan.attorneyi.data.remote
 
 import com.ayaan.attorneyi.data.config.ApiConfig
+import com.ayaan.attorneyi.data.config.EndPonits
 import com.ayaan.attorneyi.data.model.LegalNewsResponse
 import com.ayaan.attorneyi.data.model.LegalNewsErrorResponse
 import io.ktor.client.*
@@ -30,7 +31,7 @@ class NewsApiService(
             val timestamp = Clock.System.now().epochSeconds
             println("Fetching latest legal news from: ${ApiConfig.BASE_URL}/news (timestamp: $timestamp)")
 
-            val response = httpClient.get(ApiConfig.NEWS_ENDPOINT) {
+            val response = httpClient.get(ApiConfig.BASE_URL+ EndPonits.NEWS) {
                 // Add cache-busting headers to ensure fresh data
                 header("Cache-Control", "no-cache, no-store, must-revalidate")
                 header("Pragma", "no-cache")
@@ -79,13 +80,11 @@ class NewsApiService(
             val timestamp = Clock.System.now().epochSeconds
             println("Fetching legal news by tag '$tag' from: ${ApiConfig.BASE_URL}/news (timestamp: $timestamp)")
 
-            val response = httpClient.get("${ApiConfig.BASE_URL}/news") {
+            val response = httpClient.get(ApiConfig.BASE_URL+ EndPonits.NEWS) {
                 parameter("tag", tag)
-                // Add cache-busting headers to ensure fresh data
                 header("Cache-Control", "no-cache, no-store, must-revalidate")
                 header("Pragma", "no-cache")
                 header("Expires", "0")
-                // Add timestamp parameter to ensure fresh requests
                 parameter("_t", timestamp)
             }
 

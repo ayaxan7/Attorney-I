@@ -1,11 +1,13 @@
 package com.ayaan.attorneyi.utils
 
+import kotlinx.cinterop.BetaInteropApi
 import platform.UIKit.*
 import platform.Foundation.*
 import kotlinx.coroutines.*
 
 class IOSShareService : ShareService {
     private val serviceScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    @OptIn(BetaInteropApi::class)
     override fun share(title: String, url: String) {
         val activityItems = listOf(
             NSString.create(string = "$title\n$url")
@@ -23,6 +25,7 @@ class IOSShareService : ShareService {
         )
     }
 
+    @OptIn(BetaInteropApi::class)
     override fun shareWithImage(title: String, url: String, imagePath: String) {
         val fileManager = NSFileManager.defaultManager
 
@@ -50,6 +53,7 @@ class IOSShareService : ShareService {
         )
     }
 
+    @OptIn(BetaInteropApi::class)
     override fun shareWithImageUrl(title: String, url: String, imageUrl: String, callback: (Boolean) -> Unit) {
         if (imageUrl.isBlank()) {
             callback(false)
@@ -84,6 +88,7 @@ class IOSShareService : ShareService {
             } catch (e: Exception) {
                 share(title, url)
                 callback(false)
+                e.printStackTrace()
             }
         }
     }

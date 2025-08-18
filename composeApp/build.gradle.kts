@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.googleServices)
 }
 
 // Read local.properties
@@ -44,6 +45,9 @@ kotlin {
             implementation(libs.ktor.client.android)
             // Accompanist SwipeRefresh - Android only
             implementation(libs.accompanist.swiperefresh)
+            implementation(project.dependencies.platform(libs.android.firebase.bom))
+            implementation(libs.android.firebase.auth)
+            implementation(libs.android.firebase.analytics)
         }
 
         iosMain.dependencies {

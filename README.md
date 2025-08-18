@@ -65,6 +65,7 @@ AttorneyI is designed as a comprehensive legal information platform that bridges
 
 - **Android Studio**: Arctic Fox or later with Kotlin Multiplatform plugin
 - **Xcode**: 14.0+ (for iOS development)
+- **CocoaPods**: Required for iOS dependency management (install via `sudo gem install cocoapods`)
 - **JDK**: Version 11 or higher
 - **Kotlin**: Version 2.2.0
 - **Gradle**: Version 8.12.0
@@ -98,11 +99,34 @@ AttorneyI is designed as a comprehensive legal information platform that bridges
    ./gradlew :composeApp:assembleDebug
    ```
 
-   **iOS**
+   **iOS (CocoaPods Setup)**
+   
+   The iOS app uses CocoaPods for dependency management and integrates with the Kotlin Multiplatform framework. Follow these steps:
+   
    ```bash
-   # Generate Xcode project
-   ./gradlew :composeApp:embedAndSignAppleFrameworkForXcode
-   # Open iosApp/iosApp.xcodeproj in Xcode
+   # 1. Generate the Kotlin framework (required before pod install)
+   ./gradlew :composeApp:generateDummyFramework
+   
+   # 2. Navigate to iOS directory and install pods
+   cd iosApp/iosApp
+   pod install
+   
+   # 3. Open the workspace (not the project file)
+   open iosApp.xcworkspace
+   ```
+   
+   **Important Notes:**
+   - Always use `iosApp.xcworkspace` instead of `iosApp.xcodeproj` when opening in Xcode
+   - The project includes Firebase dependencies (FirebaseAuth and FirebaseCore v11.13)
+   - If you encounter framework issues, run `./gradlew :composeApp:generateDummyFramework` again
+   - The minimum iOS deployment target is 16.0
+   
+   **CocoaPods Configuration:**
+   The project's `Podfile` is configured to:
+   - Target iOS 16.0+
+   - Use frameworks for Swift integration
+   - Include the composeApp Kotlin Multiplatform framework
+   - Integrate Firebase dependencies for authentication
    ```
 
 ### iOS Local Configuration
@@ -125,7 +149,7 @@ AttorneyI is designed as a comprehensive legal information platform that bridges
    ```bash
    # Install Xcode Command Line Tools
    sudo xcode-select --install
-   
+
    # Verify installation
    xcode-select -p
    ```
@@ -136,10 +160,10 @@ AttorneyI is designed as a comprehensive legal information platform that bridges
    ```bash
    # Navigate to project root
    cd AttorneyI
-   
+
    # Clean any existing builds
    ./gradlew clean
-   
+
    # Build shared framework for iOS
    ./gradlew :composeApp:embedAndSignAppleFrameworkForXcode
    ```
@@ -171,7 +195,7 @@ AttorneyI is designed as a comprehensive legal information platform that bridges
    ```bash
    # List available simulators
    xcrun simctl list devices
-   
+
    # Install specific iOS version (if needed)
    # This is done through Xcode -> Preferences -> Components
    ```
@@ -180,7 +204,7 @@ AttorneyI is designed as a comprehensive legal information platform that bridges
    ```bash
    # Build and run on simulator from command line
    ./gradlew :composeApp:iosSimulatorArm64Test
-   
+
    # Or use Xcode: Product -> Run (⌘+R)
    ```
 
@@ -201,7 +225,7 @@ AttorneyI is designed as a comprehensive legal information platform that bridges
    ```bash
    # Build for device
    ./gradlew :composeApp:embedAndSignAppleFrameworkForXcode
-   
+
    # Deploy via Xcode: Select device and run
    ```
 
@@ -235,7 +259,7 @@ AttorneyI is designed as a comprehensive legal information platform that bridges
    ```bash
    # Clean derived data
    rm -rf ~/Library/Developer/Xcode/DerivedData
-   
+
    # Clean and rebuild
    ./gradlew clean
    ./gradlew :composeApp:embedAndSignAppleFrameworkForXcode
@@ -245,7 +269,7 @@ AttorneyI is designed as a comprehensive legal information platform that bridges
    ```bash
    # Verify framework generation
    ls -la composeApp/build/xcode-frameworks/
-   
+
    # Regenerate if missing
    ./gradlew :composeApp:embedAndSignAppleFrameworkForXcode
    ```
@@ -260,7 +284,7 @@ AttorneyI is designed as a comprehensive legal information platform that bridges
    ```bash
    # Reset simulator
    xcrun simctl erase all
-   
+
    # Restart simulator service
    sudo killall -9 com.apple.CoreSimulator.CoreSimulatorService
    ```

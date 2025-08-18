@@ -49,16 +49,6 @@ kotlin {
             extraOpts += listOf("-compiler-option", "-fmodules")
         }
     }
-//    listOf(
-//        iosX64(),
-//        iosArm64(),
-//        iosSimulatorArm64()
-//    ).forEach { iosTarget ->
-//        iosTarget.binaries.framework {
-//            baseName = "ComposeApp"
-//            isStatic = true
-//        }
-//    }
 
     sourceSets {
         androidMain.dependencies {
@@ -109,12 +99,8 @@ kotlin {
             // SwipeRefresh
 //            implementation(libs.accompanist.swiperefresh)
         }
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
-        }
     }
 }
-
 android {
     namespace = "com.ayaan.attorneyi"
     compileSdk = libs.versions.android.compileSdk.get().toInt()

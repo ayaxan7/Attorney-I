@@ -12,12 +12,12 @@ actual object FirebaseInitializer {
 }
 
 // Update AppContext to include Firebase initialization
-actual object AppContext {
-    fun setUp() {
-        FirebaseInitializer.initialize()
-    }
-
-    fun get(): NSBundle {
-        return NSBundle.mainBundle
-    }
-}
+//actual object AppContext {
+//    fun setUp() {
+////        FirebaseInitializer.initialize()
+//    }
+//
+//    fun get(): NSBundle {
+//        return NSBundle.mainBundle
+//    }
+//}

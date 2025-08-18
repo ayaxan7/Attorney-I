@@ -1,5 +1,6 @@
 package com.ayaan.attorneyi
 
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -16,7 +17,7 @@ fun App() {
         }
     ) {
         AttorneyITheme {
-            NewsScreen(modifier = Modifier.systemBarsPadding())
+            NewsScreen(modifier = Modifier)
         }
     }
 }

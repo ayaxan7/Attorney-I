@@ -20,10 +20,11 @@ koinAnnotations = "2.1.0"
 kotlinx-serialization = "1.8.0"
 kotlinx-datetime = "0.6.1"
 coil = "3.0.4"
-accompanist = "0.36.0"
+#accompanist = "0.36.0"
 firebase-bom = "33.14.0"
 google-services-plugin = "4.4.2"
 firebaseCommonKtx = "22.0.0"
+firebaseDatabaseKtx = "22.0.0"
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-testJunit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
@@ -60,7 +61,7 @@ coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" 
 coil-network-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 
 # Accompanist
-accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
+#accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
 #Firebase
 android-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 # Optional, include if using firebase auth
@@ -68,6 +69,7 @@ android-firebase-auth = { module = "com.google.firebase:firebase-auth" }
 # Optional, include if using firebase analytics
 android-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx", version.ref = "firebaseCommonKtx" }
+firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
@@ -77,3 +79,4 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 googleServices = { id = "com.google.gms.google-services", version.ref = "google-services-plugin" }
+kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }

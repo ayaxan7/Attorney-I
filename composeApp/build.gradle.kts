@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.googleServices)
+    alias(libs.plugins.kotlinCocoapods)
 }
 
 // Read local.properties
@@ -26,17 +27,38 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+    cocoapods {
+        summary = "My compose multiplatform app"
+        version = "1.0"
+        homepage = "https://medium.com"
+        ios.deploymentTarget = "16.0"
+        // Add the framework block here
+        framework {
             baseName = "ComposeApp"
             isStatic = true
         }
+        pod("FirebaseCore") {
+            version = "~> 11.13"
+            extraOpts += listOf("-compiler-option", "-fmodules")
+        }
+        pod("FirebaseAuth") {
+            version = "~> 11.13"
+            extraOpts += listOf("-compiler-option", "-fmodules")
+        }
     }
+//    listOf(
+//        iosX64(),
+//        iosArm64(),
+//        iosSimulatorArm64()
+//    ).forEach { iosTarget ->
+//        iosTarget.binaries.framework {
+//            baseName = "ComposeApp"
+//            isStatic = true
+//        }
+//    }
 
     sourceSets {
         androidMain.dependencies {
@@ -44,7 +66,7 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.android)
             // Accompanist SwipeRefresh - Android only
-            implementation(libs.accompanist.swiperefresh)
+//            implementation(libs.accompanist.swiperefresh)
             implementation(project.dependencies.platform(libs.android.firebase.bom))
             implementation(libs.android.firebase.auth)
             implementation(libs.android.firebase.analytics)
@@ -85,7 +107,7 @@ kotlin {
             implementation(libs.coil.network.ktor3)
 
             // SwipeRefresh
-            implementation(libs.accompanist.swiperefresh)
+//            implementation(libs.accompanist.swiperefresh)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

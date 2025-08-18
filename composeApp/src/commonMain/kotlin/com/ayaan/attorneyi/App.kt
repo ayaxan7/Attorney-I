@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.ayaan.attorneyi.di.appModules
-import com.ayaan.attorneyi.presentation.legalUpdates.NewsScreen
+import com.ayaan.attorneyi.presentation.navigation.AppNavigation
 import com.ayaan.attorneyi.presentation.ui.AttorneyITheme
 import org.koin.compose.KoinApplication
 
@@ -17,7 +17,7 @@ fun App() {
         }
     ) {
         AttorneyITheme {
-            NewsScreen(modifier = Modifier)
+            AppNavigation()
         }
     }
 }

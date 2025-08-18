@@ -1,14 +1,20 @@
 package com.ayaan.attorneyi.utils
 
-import platform.Foundation.NSBundle
 import cocoapods.FirebaseCore.FIRApp
 import kotlinx.cinterop.ExperimentalForeignApi
+import platform.Foundation.NSBundle
 
-actual object AppContext {
+actual object FirebaseInitializer {
     @OptIn(ExperimentalForeignApi::class)
-    fun setUp() {
-        // Initialize Firebase for iOS
+    actual fun initialize() {
         FIRApp.configure()
+    }
+}
+
+// Update AppContext to include Firebase initialization
+actual object AppContext {
+    fun setUp() {
+        FirebaseInitializer.initialize()
     }
 
     fun get(): NSBundle {

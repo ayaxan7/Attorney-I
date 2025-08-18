@@ -44,5 +44,6 @@ val viewModelModuleManual = module {
 val appModules = listOf(
     networkModule,
     dataModuleManual,
-    viewModelModuleManual
+    viewModelModuleManual,
+    authModule
 )

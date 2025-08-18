@@ -6,8 +6,17 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		D388D6282E5300E300DA39E8 /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D388D6262E5300E300DA39E8 /* Release.xcconfig */; };
+		D388D6292E5300E300DA39E8 /* Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D388D6252E5300E300DA39E8 /* Debug.xcconfig */; };
+		D388D62A2E5300E300DA39E8 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D388D6242E5300E300DA39E8 /* Config.xcconfig */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		B9DA97B12DC1472C00A4DA20 /* AttorneyI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AttorneyI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D388D6242E5300E300DA39E8 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		D388D6252E5300E300DA39E8 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text; path = Debug.xcconfig; sourceTree = "<group>"; };
+		D388D6262E5300E300DA39E8 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text; path = Release.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -53,6 +62,7 @@
 				B9DA98002DC14AA900A4DA20 /* Configuration */,
 				B9DA97B32DC1472C00A4DA20 /* iosApp */,
 				B9DA97B22DC1472C00A4DA20 /* Products */,
+				D388D6272E5300E300DA39E8 /* Configuration */,
 			);
 			sourceTree = "<group>";
 		};
@@ -64,6 +74,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		D388D6272E5300E300DA39E8 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				D388D6242E5300E300DA39E8 /* Config.xcconfig */,
+				D388D6252E5300E300DA39E8 /* Debug.xcconfig */,
+				D388D6262E5300E300DA39E8 /* Release.xcconfig */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -71,10 +91,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B9DA97BF2DC1472D00A4DA20 /* Build configuration list for PBXNativeTarget "iosApp" */;
 			buildPhases = (
-				B9DA97F42DC1497100A4DA20 /* Compile Kotlin Framework */,
 				B9DA97AD2DC1472C00A4DA20 /* Sources */,
 				B9DA97AE2DC1472C00A4DA20 /* Frameworks */,
 				B9DA97AF2DC1472C00A4DA20 /* Resources */,
+				D388D62D2E53020700DA39E8 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -129,13 +149,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D388D6282E5300E300DA39E8 /* Release.xcconfig in Resources */,
+				D388D6292E5300E300DA39E8 /* Debug.xcconfig in Resources */,
+				D388D62A2E5300E300DA39E8 /* Config.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		B9DA97F42DC1497100A4DA20 /* Compile Kotlin Framework */ = {
+		D388D62D2E53020700DA39E8 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -145,14 +168,13 @@
 			);
 			inputPaths = (
 			);
-			name = "Compile Kotlin Framework";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"YES\" = \"$OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED\" ]; then\n  echo \"Skipping Gradle build task invocation due to OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED environment variable set to \\\"YES\\\"\"\n  exit 0\nfi\ncd \"$SRCROOT/..\"\n./gradlew :composeApp:embedAndSignAppleFrameworkForXcode\n";
+			shellScript = "echo \"Copying GoogleService located at ${GOOGLE_SERVICE}\"\n\nif [ -z \"${GOOGLE_SERVICE}\" ]; then\n    echo \"GOOGLE_SERVICE is unset or set to the empty string\"\n    exit 1\nfi\n\nif [ ! -f \"${GOOGLE_SERVICE}\" ]; then\n    echo \"GOOGLE_SERVICE does not exist\"\n    exit 1\nfi\n\nPLIST_DESTINATION=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\ncp \"${GOOGLE_SERVICE}\" \"${PLIST_DESTINATION}\"\n\necho \"Copied ${GOOGLE_SERVICE} to ${PLIST_DESTINATION}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -169,6 +191,8 @@
 /* Begin XCBuildConfiguration section */
 		B9DA97BD2DC1472D00A4DA20 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = B9DA98002DC14AA900A4DA20 /* Configuration */;
+			baseConfigurationReferenceRelativePath = Debug.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -232,6 +256,8 @@
 		};
 		B9DA97BE2DC1472D00A4DA20 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = B9DA98002DC14AA900A4DA20 /* Configuration */;
+			baseConfigurationReferenceRelativePath = Release.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -321,8 +347,7 @@
 		};
 		B9DA97C12DC1472D00A4DA20 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = B9DA98002DC14AA900A4DA20 /* Configuration */;
-			baseConfigurationReferenceRelativePath = Config.xcconfig;
+			baseConfigurationReference = D388D6242E5300E300DA39E8 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

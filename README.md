@@ -82,9 +82,6 @@ AttorneyI is designed as a comprehensive legal information platform that bridges
    ```properties
    # Android SDK path (auto-generated)
    sdk.dir=/path/to/your/android/sdk
-   
-   # Required: GNews API Key for fallback news sources
-   GNEWS_API_KEY=your_gnews_api_key_here
    ```
 
 3. **Install Dependencies**
@@ -274,7 +271,6 @@ The application requires the following configuration in `local.properties`:
 
 | Variable | Purpose | Required | Example |
 |----------|---------|----------|---------|
-| `GNEWS_API_KEY` | GNews API access for fallback content | Yes | `c3195bbf527fa50eadc52d64c40e1d86` |
 | `sdk.dir` | Android SDK path | Yes (Android only) | `/Users/username/Library/Android/sdk` |
 
 ### Build Variants

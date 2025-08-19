@@ -19,11 +19,10 @@ class AndroidShareService() : ShareService {
     override fun share(title: String, url: String) {
         try {
             val context = AppContext.get()
-            if (context == null) {
+            if(context is Exception || context == null) {
                 Log.e("AndroidShareService", "Context is null, cannot share")
                 return
             }
-
             val shareText = if (url.isNotBlank()) {
                 "$title\n\n$url"
             } else {

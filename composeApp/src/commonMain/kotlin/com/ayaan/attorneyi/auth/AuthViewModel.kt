@@ -64,7 +64,6 @@ class AuthViewModel(private val authRepository: AuthRepository) : ViewModel() {
         confirmPassword = newConfirmPassword
         clearError()
     }
-
     fun signIn() {
         if (!validateSignInInput()) return
 

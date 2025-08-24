@@ -105,13 +105,13 @@ fun NewsItem(
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    IconButton(onClick = { /* Handle bookmark */ }) {
-                        Icon(
-                            Icons.Default.BookmarkBorder,
-                            contentDescription = "Bookmark",
-                            tint = GoldAccent
-                        )
-                    }
+//                    IconButton(onClick = { /* Handle bookmark */ }) {
+//                        Icon(
+//                            Icons.Default.BookmarkBorder,
+//                            contentDescription = "Bookmark",
+//                            tint = GoldAccent
+//                        )
+//                    }
                     IconButton(onClick = {
 //                        shareContent(
 //                            ShareServiceProvider(),

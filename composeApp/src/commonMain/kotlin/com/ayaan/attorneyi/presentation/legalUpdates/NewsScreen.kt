@@ -89,7 +89,7 @@ private fun NewsContent(
                     onClearFilter = onClearFilter
                 )
                 // Breaking news toggle
-                BreakingNewsToggle()
+//                BreakingNewsToggle()
                 Spacer(modifier = Modifier.height(16.dp))
             }
             when {

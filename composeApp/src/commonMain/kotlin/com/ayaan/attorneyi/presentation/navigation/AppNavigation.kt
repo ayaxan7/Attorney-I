@@ -17,11 +17,12 @@ fun AppNavigation() {
     val navController = rememberNavController()
 
     // Determine start destination based on authentication state
-    val startDestination = if (uiState.isSignedIn && uiState.currentUser != null) {
-        NavigationRoutes.News.route
-    } else {
-        NavigationRoutes.Auth.route
-    }
+//    val startDestination = if (uiState.isSignedIn && uiState.currentUser != null) {
+//        NavigationRoutes.News.route
+//    } else {
+//        NavigationRoutes.Auth.route
+//    }
+    val startDestination= NavigationRoutes.News.route // For testing purposes, always start at News
     AppLogger.d("AppNavigation", "Start destination: $startDestination with isSignedIn=${uiState.isSignedIn} and currentUser=${uiState.currentUser}")
     NavHost(
         startDestination = startDestination,
